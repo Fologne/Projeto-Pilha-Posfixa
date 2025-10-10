@@ -62,3 +62,7 @@ O sistema permite ao usuário definir **funções com múltiplas variáveis**, a
 ### 🔹 Compilação
 ```bash
 gcc main.c menu.c func.c pilha.c pfloat.c -o calculadora
+```
+### 🔹 Execução
+```
+./calculadora
