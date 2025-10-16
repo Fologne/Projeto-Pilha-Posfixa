@@ -65,4 +65,4 @@ gcc main.c menu.c func.c pilha.c pfloat.c -o calculadora
 ```
 ### 🔹 Execução
 ```
-./calculadora
+./main.exe
