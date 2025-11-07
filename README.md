@@ -66,3 +66,10 @@ gcc main.c menu.c func.c pilha.c pfloat.c -o main.exe
 ### 🔹 Execução
 ```
 ./main.exe
+```
+
+👨‍💻 Autor
+
+**[Gabriel Foloni](https://github.com/Fologne)**
+
+Projeto desenvolvido para fins acadêmicos.
