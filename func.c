@@ -107,58 +107,56 @@ Valores *valores(char s[]){
 float avaliar(char s[], Valores *v, int quant){
     Pilha_float pf = criar_pilhaf(500);
     int tamanho = strlen(s);
-    for (int i = 0; i < tamanho; i++){
-        if (isalpha(s[i]) && s[i] != '\0'){
+    for (int i = 0; i < tamanho; i++) {
+        if (isalpha(s[i])){
+        // variável
             for (int j = 0; j < quant; j++){
-                if (v[j].letra == s[i] && v[j].letra != '\0'){
-                    empilhaf (v[j].variaveis, pf);
+                if (v[j].letra == s[i]){
+                    empilhaf(v[j].variaveis, pf);
                     break;
                 }
             }
         }
-        else{
-            float y = desempilhaf (pf);
-            float x = desempilhaf (pf);
+        else if (isdigit(s[i])){
+        // número literal (ex: 123)
+            char num[50];
+            int k = 0;
+            while (isdigit(s[i]) || s[i] == '.'){
+                num[k++] = s[i++];
+            }
+            num[k] = '\0';
+            i--; // compensar o último incremento do for
+            empilhaf(atof(num), pf);
+        }
+        else if (strchr("+-*/^$", s[i])){
+            float y = desempilhaf(pf);
+            float x = desempilhaf(pf);
             switch (s[i]){
-            case '+':
-                empilhaf (x+y, pf);
-                break;
-            case '-':
-                empilhaf (x-y, pf);
-                break;
-            case '*':
-                empilhaf (x*y, pf);
-                break;
-            case '/':
-                if (y != 0){
-                    empilhaf (x/y, pf);
-                }
-                else{
-                    printf("Divisao por zero detectada, favor, rever os valores das variaveis\n");
-                    destroif (&pf);
-                    return NAN;
-                }
-                break;
-            case '^':
-                empilhaf (pow(x, y), pf);
-                break; 
-            case '$':
-                float resto = fmod(y, 2);
-                if ((x < 0 && resto == 0) || y == 0){
-                    printf ("Raiz indefenida, favor, rever os valores das variaveis\n");
-                    return NAN;
-                }
-                else{
-                    if (x < 0 && resto != 0){
-                        empilhaf(-pow(-x, 1.0/y), pf);
+                case '+': empilhaf(x + y, pf); break;
+                case '-': empilhaf(x - y, pf); break;
+                case '*': empilhaf(x * y, pf); break;
+                case '/':
+                    if (y != 0) empilhaf(x / y, pf);
+                    else {
+                        printf("Divisao por zero!\n");
+                        destroif(&pf);
+                        return NAN;
                     }
-                    else{
-                        empilhaf(pow(x, 1.0/y), pf);
+                    break;
+                case '^': empilhaf(pow(x, y), pf); break;
+                case '$':{
+                    float resto = fmod(y, 2);
+                    if ((x < 0 && resto == 0) || y == 0) {
+                       printf("Raiz indefinida!\n");
+                        destroif(&pf);
+                        return NAN;
                     }
+                    if (x < 0 && resto != 0)
+                        empilhaf(-pow(-x, 1.0 / y), pf);
+                    else
+                        empilhaf(pow(x, 1.0 / y), pf);
+                    break;
                 }
-                break;
-            default:
-                break;
             }
         }
     }
